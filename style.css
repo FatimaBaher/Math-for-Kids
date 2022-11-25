@@ -1,0 +1,146 @@
+*{
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    font-family: "Trinta Quatro";
+}
+body{
+    overflow: hidden;
+}
+@font-face {
+    font-family: "Trinta Quatro";
+    src: url("assets/Trinta_quatro.woff2")format("woff2");
+}
+.header{
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    background-color: aquamarine;
+    padding: 10px;
+    font-size: 20px;
+}
+.optionsList{
+    list-style-type: none;
+    display: flex;
+    gap: 25px;
+}
+.option{
+    padding-bottom: 5px;
+    position: relative;
+    cursor: pointer;
+}
+
+.option::before{
+    content: "";
+    position: absolute;
+    width: 100%;
+    height: 4px;
+    opacity: 0;
+    bottom: 0;
+    left: 0;
+    background-color: red;
+}
+
+.option:hover::before{
+    opacity: 1;   
+}
+
+main{
+    background-color: lightgray;
+    height: 100vh;
+    overflow: hidden;
+    padding: 10px;
+    display: flex;
+    position: relative;
+    gap: 10px;
+}
+.equationBlock{
+    height: 85%;
+    border-radius: 5px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 5px;
+    background-color: white;
+    flex: 3.5;
+    position: relative;
+}
+.answersBlock{
+    height: 85%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+    justify-content: space-between;
+    flex: 1;
+}
+  
+.numberCard{
+    background-color: blueviolet;
+    border-radius: 5px;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 150px;
+    cursor: pointer;
+}
+.value{
+    font-size: 130px;;
+}
+
+.scoreBlock{
+    position: absolute;
+    top: 20px;
+    left: 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 40px;
+    gap: 25px;
+}
+
+.score>span{
+    color: purple;
+}
+
+.refresh{
+    cursor: pointer;
+}
+
+.generate{
+    position: absolute;
+    bottom: 20px;
+    left: 20px;
+    height: 70px;
+    width: 400px;
+    font-size: 40px;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.hint{
+    position: absolute;
+    bottom: 20px;
+    right: 20px;
+    height: 70px;
+    width: 400px;
+    font-size: 40px;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.timer{
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    font-size: 40px;
+    display: flex;
+    gap: 10px;
+}
+.watchIcon{
+    margin-right: 15px;
+    cursor: pointer;
+}
+

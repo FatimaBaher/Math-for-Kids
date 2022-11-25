@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Math for kids</title>
+    <link rel="stylesheet" href="style.css">   
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css" integrity="sha512-xh6O/CkQoPOWDdYTDqeRdPCVd1SpvCA9XXcUnZS2FmJNp1coAFzvtCN9BmamE+4aHK8yyUHUSCcJHgXloTyT2A==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+</head>
+<body>
+    <header class="header">       
+        <h1>MATH 4 KIDS</h1>
+        <nav >
+            <ul class="optionsList">
+                <li class="option">ADD</li>
+                <li class="option">SUBTRACT</li>
+                <li class="option">MULTIPLY</li>
+                <li class="option">DIVIDE</li>
+                <li class="option">RANDOM</li>
+            </ul>
+        </nav>
+    </header>
+    <main>
+        <div class="equationBlock">
+            <div class="scoreBlock">
+                <span class="score">SCORE: <span></span>XP</span>
+                <i class="refresh fa fa-refresh fa-2xs"></i>
+            </div>
+            <div class="timer">
+                <i class="fa fa-stopwatch watchIcon"></i>
+                <span></span>
+                <span>:</span>
+                <span></span>
+            </div>
+            <span id="v1" class="value"></span>
+            <span id="op" class="value"></span>
+            <span id="v2" class="value"></span>
+            <span id="eq" class="value">=</span>
+            <span id="v3" class="value">?</span>
+            <button class="generate">GENERATE NEW</button>
+            <button class="hint">HINT FOR 2 XP</button>
+        </div>
+        <div class="answersBlock">
+            <div class="numberCard numberCard1"></div>
+            <div class="numberCard numberCard2"></div>
+            <div class="numberCard numberCard3"></div>
+        </div>
+    </main>
+    <script src="script.js"></script>
+</body>
+</html>
