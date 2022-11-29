@@ -7,27 +7,50 @@
 body{
     overflow: hidden;
 }
+@keyframes displayHintMsg{
+    0%{
+        opacity: 1;   
+    }
+    100%{
+        opacity: 0;
+        transform: translateY(-20px);
+    }
+}
 @font-face {
     font-family: "Trinta Quatro";
     src: url("assets/Trinta_quatro.woff2")format("woff2");
 }
-.header{
+header{
     display: flex;
-    justify-content: space-around;
+    justify-content: space-between;
     align-items: center;
-    background-color: aquamarine;
-    padding: 10px;
+    background-color: #add8e6;
+    color: #c98acb;
+    padding: 10px 120px;
     font-size: 20px;
+    -webkit-text-stroke: 1px black;
+    height: 100px;
+}
+#v3{
+    color: #c98acb;
+    -webkit-text-stroke: 1.5px black;
+}
+#op,#eq{
+    color: #add8e6;
+    -webkit-text-stroke: 1.5px black;
 }
 .optionsList{
     list-style-type: none;
     display: flex;
+    align-items: center;
     gap: 25px;
 }
 .option{
     padding-bottom: 5px;
     position: relative;
     cursor: pointer;
+    font-size: 25px;
+    text-shadow: black 0px 0px 3px;
 }
 
 .option::before{
@@ -46,13 +69,17 @@ body{
 }
 
 main{
-    background-color: lightgray;
+    background-color: #e4dcdc;
     height: 100vh;
     overflow: hidden;
     padding: 10px;
     display: flex;
     position: relative;
     gap: 10px;
+    
+}
+label{
+    text-shadow: black 0px 0px 3px;
 }
 .equationBlock{
     height: 85%;
@@ -61,9 +88,11 @@ main{
     justify-content: center;
     align-items: center;
     gap: 5px;
-    background-color: white;
+    background-color: #fff0f7;
     flex: 3.5;
     position: relative;
+    box-shadow: 1px 2px 5px 0 gray;
+    border: 1px solid black;
 }
 .answersBlock{
     height: 85%;
@@ -76,8 +105,9 @@ main{
 }
   
 .numberCard{
-    background-color: blueviolet;
+    background-color: #c98acb;
     border-radius: 5px;
+    border: 1px solid black;
     width: 100%;
     height: 100%;
     display: flex;
@@ -85,20 +115,20 @@ main{
     align-items: center;
     font-size: 150px;
     cursor: pointer;
+    box-shadow: 1px 2px 5px 0 gray;
 }
 .value{
-    font-size: 130px;;
+    font-size: 130px;
 }
 
 .scoreBlock{
-    position: absolute;
-    top: 20px;
-    left: 20px;
+   
     display: flex;
     justify-content: space-between;
     align-items: center;
     font-size: 40px;
     gap: 25px;
+
 }
 
 .score>span{
@@ -118,17 +148,31 @@ main{
     font-size: 40px;
     border-radius: 5px;
     cursor: pointer;
+    background-color: #c98acb;
+    border: 1px solid black;
+    box-shadow: 1px 2px 5px 0 gray;
 }
 
-.hint{
+
+.hintContainer{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
     position: absolute;
     bottom: 20px;
     right: 20px;
+}
+
+.hint{
+    
     height: 70px;
     width: 400px;
     font-size: 40px;
     border-radius: 5px;
     cursor: pointer;
+    background-color: #c98acb;
+    border: 1px solid black;
+    box-shadow: 1px 2px 5px 0 gray;
 }
 
 .timer{
@@ -144,3 +188,100 @@ main{
     cursor: pointer;
 }
 
+.scoreNlevels{
+    position: absolute;
+    top: 20px;
+    left: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+
+
+.popupContainer{
+    top: 0;
+    left: 0;
+    z-index: 3;
+    position: absolute;
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: 2s;
+    background: linear-gradient(to bottom right, lightblue, #c98acb);
+}
+.popup{
+    background-color: #add8e6;
+    border-radius: 5px;
+    padding: 30px 50px;
+    font-size: 25px;
+    border: 2px solid black;
+}
+
+label{
+    color: #c98acb;
+    -webkit-text-stroke: 1px black;
+}
+.info{
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+.input>input,.input>select{
+  display: block;
+  width: 100%;
+  font-size: 18px;
+  text-transform: uppercase;
+  cursor: pointer;
+  border-radius: 5px;
+  text-align: center;
+  box-shadow: 1px 2px 5px 0 gray;
+}
+
+.levels{
+    display: flex;
+    margin-inline: auto;
+    border-color: blueviolet;
+    width: 100%;
+    border-radius: 5px;
+    overflow: hidden;
+    background-color: #c98acb;
+    gap: 1px;
+    box-shadow: 1px 2px 5px 0 gray;
+}
+.levels>label{
+    background-color: black;
+    color: #c98acb;
+    font-size: 15px;
+    margin: 0;
+    flex-grow: 1;
+    text-align: center;
+    padding: 10px;
+    transition: .4s;
+    cursor: pointer;
+
+}
+
+input[type="radio"]:checked+label{
+    background-color: #c98acb;
+    color: black;
+}
+
+.levels>input{
+    display: none;
+}
+
+.startGameBtn{
+    margin-inline: auto;
+    border-radius: 5px;
+    text-align: center;
+    padding: 10px;
+    background-color: #c98acb;
+    font-size: 20px;
+    color: black;
+    border: 1px solid black;
+    cursor: pointer;
+    box-shadow: 1px 2px 5px 0 gray;
+}

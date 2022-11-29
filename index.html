@@ -9,23 +9,66 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css" integrity="sha512-xh6O/CkQoPOWDdYTDqeRdPCVd1SpvCA9XXcUnZS2FmJNp1coAFzvtCN9BmamE+4aHK8yyUHUSCcJHgXloTyT2A==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 </head>
 <body>
-    <header class="header">       
-        <h1>MATH 4 KIDS</h1>
+    <div class="popupContainer">
+        <div class="popup">
+            <h2 style="text-align: center; color: #c98acb; -webkit-text-stroke: 2px black; text-shadow: black 0px 0px 10px;">MATH 4 KIDS</h1>
+            <br><br>
+            <form class="info">
+                <div class="input">
+                    <label for="username">ENTER YOUR USERNAME:</label>
+                    <input name="username" >
+                </div>
+                <div class="input">
+                    <label>CHOOSE AN OPERATION:</label>
+                    <select class="operatorsList">
+                        <option value="ADD">ADD</option>
+                        <option value="SUBTRACT">SUBTRACT</option>
+                        <option value="MULTIPLY">MULTIPLY</option>
+                        <option value="DIVIDE">DIVIDE</option>
+                        <option value="RANDOM">RANDOM</option>
+                    </select>
+                </div>
+                
+                
+                <label>CHOOSE A LEVEL:</label>
+                <div class="levels">              
+                    <input type="radio" id="level-easy" name="level" value="EASY" checked hidden>
+                    <label for="level-easy">EASY</label>
+                    <input type="radio" id="level-medium" name="level" value="MEDIUM" hidden>
+                    <label for="level-medium">MEDIUM</label>
+                    <input type="radio" id="level-hard" name="level" value="HARD" hidden>
+                    <label for="level-hard">HARD</label>
+                                      
+                </div>
+                
+                <br>
+                <br>
+                <div class="startGameBtn">START GAME</div>
+            </form>
+            
+        </div>
+    </div>
+    <header>       
+        <h1 style="-webkit-text-stroke:2px black; text-shadow: black 0px 0px 10px;">MATH 4 KIDS</h1>
         <nav >
             <ul class="optionsList">
-                <li class="option">ADD</li>
-                <li class="option">SUBTRACT</li>
-                <li class="option">MULTIPLY</li>
-                <li class="option">DIVIDE</li>
-                <li class="option">RANDOM</li>
+                <li class="option">GAME</li>
+                <li class="option">CALCULATOR</li>
+                <li class="option">LEADERBOARD</li>
+                <li class="option">SETTINGS</li>
             </ul>
         </nav>
     </header>
     <main>
+        
         <div class="equationBlock">
-            <div class="scoreBlock">
-                <span class="score">SCORE: <span></span>XP</span>
-                <i class="refresh fa fa-refresh fa-2xs"></i>
+            <div class="scoreNlevels">
+                
+                <div class="scoreBlock">
+                    <span class="score">SCORE: <span></span>XP</span>
+                    <i class="refresh fa fa-refresh fa-2xs"></i>
+                </div>
+                
             </div>
             <div class="timer">
                 <i class="fa fa-stopwatch watchIcon"></i>
@@ -39,7 +82,10 @@
             <span id="eq" class="value">=</span>
             <span id="v3" class="value">?</span>
             <button class="generate">GENERATE NEW</button>
-            <button class="hint">HINT FOR 2 XP</button>
+            <div class="hintContainer">
+                <button class="hint"></button>
+            </div>
+            
         </div>
         <div class="answersBlock">
             <div class="numberCard numberCard1"></div>

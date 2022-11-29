@@ -1,27 +1,73 @@
 "use strict"
 
 //Defining Variables
-let result, ans1, ans2;
-let operation="ADD";
+let result, ans1, ans2, secRemoved, xp, upperbound,username, operation, level, min, sec;
 let score = 0, hintNb=0;
 let loseAudio = new Audio('assets/mixkit-retro-arcade-lose-2027.wav');
 let winAudio = new Audio('assets/claps.mp3');
 let CountDownTime;
 let random = false;
 
+
 //Grabbing Elements
 const refreshBtn = document.querySelector(".refresh");
-const btns = document.querySelectorAll('.option');
 const generateBtn = document.querySelector(".generate");
 const hintBtn = document.querySelector(".hint");
 const values = document.querySelectorAll('.numberCard');
 const minutesPos = document.querySelector(".timer>span");
 const secondsPos = document.querySelector(".timer>span:nth-of-type(3)");
 const startTimerBtn = document.querySelector('.watchIcon');
+const startGameBtn = document.querySelector(".startGameBtn");
+const popup = document.querySelector(".popupContainer");
+const title = document.querySelector(".popup>h2");
+const hintContainer = document.querySelector(".hintContainer");
 
 //Adding Event Listeners
+
+startGameBtn.addEventListener("click",()=>{
+    level = document.querySelector("input[name='level']:checked").value;
+    operation = document.querySelector(".operatorsList").value;
+    username = document.querySelector(".input>input").value;
+    if(operation=="RANDOM"){
+        random=true;
+    }
+    switch(level){
+        case "EASY":
+            secRemoved = 10;
+            xp = 2;
+            upperbound = 20;
+            min = '03' ;
+            sec = '00';
+            break; 
+        case "MEDIUM":
+            secRemoved = 10;
+            xp = 3;
+            upperbound = 30;
+            min = '02';
+            sec = '30';
+            break;
+            
+        case "HARD":
+            secRemoved = 15;
+            xp = 3;
+            upperbound = 40;
+            min = '02' ;
+            sec = '00';
+            break; 
+    }
+    
+    console.log(level,username,operation,random,secRemoved,xp,min,sec);
+    popup.style.opacity = 0;
+    popup.style.pointerEvents = "none";
+    hintBtn.textContent = "HINT FOR " + xp + " XP"; 
+    setTimer(min,sec);
+    startTimer();  
+    setScore(0);
+    generateEquation();
+})
+
 generateBtn.addEventListener("click",()=>{
-    removeSeconds(10);
+    removeSeconds(secRemoved);
     generateEquation();
 })
 
@@ -29,17 +75,6 @@ hintBtn.addEventListener("click",()=>{
     useHint(hintNb);
 })
 
-btns.forEach((btn)=>{
-    btn.addEventListener("click",() => {
-        operation = btn.textContent;
-        if(operation=="RANDOM"){
-            random=true;
-        }else{
-            random=false;
-        }
-        generateEquation();
-    });
-})
 
 values.forEach((value)=>{
     value.addEventListener("click",() => checkResult(value.textContent));
@@ -56,13 +91,22 @@ startTimerBtn.addEventListener("click",()=>{
 
 //Defining Functions
 function useHint(hintNumber){  
-    if(score<2 || hintNumber>1){
+    if(score<xp || hintNumber>1){
         alert("Sorry cant");
         return;
     }
     let val = hintNumber==1? ans1 : ans2;
     hintNb++;
-    setScore(score-2);
+    setScore(score-xp);
+    let hintMsg = document.createElement("span");
+    hintMsg.textContent = "- "+xp+" XP";
+    hintContainer.insertBefore(hintMsg,hintContainer.children[0]);
+    hintMsg.style.animation = 'displayHintMsg 1.5s';
+    hintMsg.style.color = "#de5252";
+    hintMsg.style.fontSize = '30px';
+    const myTimeout = setTimeout(()=>{
+        hintMsg.style.display = "none";
+    }, 1000);
     values.forEach((value)=>{
         if(value.textContent==val){
             value.style.filter="blur(5px)";
@@ -75,6 +119,8 @@ function useHint(hintNumber){
 function setScore(n){
     score = n;
     const scoreVal = document.querySelector(".score>span");
+    scoreVal.style.color = '#c98acb';
+    scoreVal.style.webkitTextStroke ='1px black'
     scoreVal.textContent = score;
 }
 
@@ -90,8 +136,8 @@ function checkResult(chosen){
 }
 
 function generateEquation(){
-    const val1 = Math.round(Math.random()*20);
-    const val2 = Math.round(Math.random()*20);
+    const val1 = Math.round(Math.random()*upperbound);
+    const val2 = Math.round(Math.random()*upperbound);
     const operator = document.querySelector('#op');
     const firstVal = document.querySelector("#v1");
     const secondVal = document.querySelector("#v2");
@@ -105,18 +151,22 @@ function generateEquation(){
     switch(operation){
         case "ADD":
             operator.textContent = '+';
+            operator.style.fontSize = '130px';
             result=val1+val2;
             break;
         case "SUBTRACT":
             operator.textContent = '-';
+            operator.style.fontSize = '130px';
             result=val1-val2;
             break;
         case "MULTIPLY":
-            operator.innerHTML = '*';
+            operator.innerHTML = 'X';
+            operator.style.fontSize = '80px';
             result=val1*val2;
             break;
         case "DIVIDE":
             operator.innerHTML ='&#247';
+            operator.style.fontSize = '110px';
             if(val2==0) val2=Math.round(Math.random()*19)+1;
             result=val1/val2;
             break;
@@ -158,16 +208,16 @@ function getRandIntBetween(min, max) {
     return Math.floor(Math.random() * (max - min + 1) + min);
 }
 
-function resetTimer(){
-    minutesPos.textContent = '03';
-    secondsPos.textContent = '00';
+function setTimer(m,s){
+    minutesPos.textContent = m;
+    secondsPos.textContent = s;
 }
 
 function startTimer(){
-    minutesPos.textContent = '03';
-    secondsPos.textContent = '00';
+    minutesPos.textContent = min;
+    secondsPos.textContent = sec;
     let now = new Date().getTime();
-    CountDownTime = new Date(now+3*60*1000+2000);  
+    CountDownTime = new Date(now+min*60*1000+2000 + sec * 1000);  
     let x = setInterval(()=>{
         let now = new Date().getTime();
         let difference = CountDownTime.getTime() - now;
@@ -175,20 +225,25 @@ function startTimer(){
         let seconds = Math.floor((difference % (1000 * 60)) / 1000);
         minutesPos.textContent = ('0'+minutes).slice(-2);
         secondsPos.textContent =  ('0' + seconds).slice(-2);
-        if(minutesPos.textContent<=0 && secondsPos.textContent<=0){
+        if((minutesPos.textContent==0 && secondsPos.textContent==0) || minutesPos.textContent < 0){
             clearInterval(x);
-            resetTimer();
-            alert("your score is"+score);
+            setTimer('00','00')
+            alert(username+" your score is "+score);
+            title.style.textShadow = '0 0 10px black';
+            title.textContent = "YOUR SCORE: " + score;
+            popup.style.opacity = 1;
+            popup.style.pointerEvents = "auto";
+            startGameBtn.textContent = "PLAY AGAIN"
+
         }
     },1000)
+    
 }
 
 function removeSeconds(s){
-    CountDownTime = new Date(CountDownTime - s*1000);
+    CountDownTime = new Date(CountDownTime - secRemoved*1000);
 }
 
-//Calling needed functions
-setScore(0);
-generateEquation();
-resetTimer();
+
+
 
