@@ -21,13 +21,14 @@ const startGameBtn = document.querySelector(".startGameBtn");
 const popup = document.querySelector(".popupContainer");
 const title = document.querySelector(".popup>h2");
 const hintContainer = document.querySelector(".hintContainer");
+const nameInput = document.querySelector('.input>input');
 
 //Adding Event Listeners
 
 startGameBtn.addEventListener("click",()=>{
     level = document.querySelector("input[name='level']:checked").value;
     operation = document.querySelector(".operatorsList").value;
-    username = document.querySelector(".input>input").value;
+    username = nameInput.value;
     if(operation=="RANDOM"){
         random=true;
     }
@@ -233,16 +234,78 @@ function startTimer(){
             title.textContent = "YOUR SCORE: " + score;
             popup.style.opacity = 1;
             popup.style.pointerEvents = "auto";
-            startGameBtn.textContent = "PLAY AGAIN"
+            startGameBtn.textContent = "PLAY AGAIN";
+            checkHighScore();
 
         }
-    },1000)
+    },1000);
+   
     
 }
 
 function removeSeconds(s){
     CountDownTime = new Date(CountDownTime - secRemoved*1000);
 }
+
+
+function checkHighScore(){
+    let highscore = localStorage.getItem("highscore");
+    if(!highscore || score>JSON.parse(highscore).score || JSON.parse(highscore).name!=username){
+        highscore = {name: username, score: score};
+        localStorage.setItem("highscore",JSON.stringify(highscore));
+        alert("new high score!!!!!!");
+    }
+
+}
+
+function fillNameInput(){
+    let savedInfo = localStorage.getItem("highscore");
+    if(savedInfo){
+        savedInfo =  JSON.parse(savedInfo);
+        nameInput.value = savedInfo.name;
+    } 
+}
+
+
+fillNameInput();
+
+/*fetch('https://sheetdb.io/api/v1/1s6kwc2vjrjbx',{
+    method:"POST",
+    headers: {
+        'Content-Type':'application/json'
+    },
+    body: JSON.stringify({
+        username: 'test2',
+        highscore: 30,
+    })
+
+})
+.then(res=>res.json())
+.then(data=>console.log(data));
+let highscores;
+fetch('https://sheetdb.io/api/v1/1s6kwc2vjrjbx')
+.then(res=>res.json())
+.then(data=>{
+    highscores=data;
+    test();
+}
+)
+
+function test(){
+    console.log(highscores);
+    for(let c of highscores){
+        console.log(c.username,c.highscore);
+    }
+}*/
+fetch('https://sheetdb.io/api/v1/1s6kwc2vjrjbx/username/test',{  
+    method: 'PATCH',
+    headers: {
+        'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({
+        highscore: 5
+    })
+})
 
 
 
