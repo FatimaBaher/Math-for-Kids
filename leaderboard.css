@@ -1,0 +1,23 @@
+table{
+    margin-inline: auto;
+    width: 70vw;
+    margin-top: 50px;
+    text-align: center;
+    font-size: 22px;
+   
+}
+th,td{
+    padding: 14px 45px;
+}
+
+tr:nth-of-type(odd){
+    background-color: #fff0f7;
+}
+tr:first-of-type{
+    background-color: #c98acb;
+
+}
+
+
+
+

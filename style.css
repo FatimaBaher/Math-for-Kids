@@ -69,7 +69,7 @@ header{
     opacity: 1;   
 }
 
-main{
+.wrapper{
     background-color: #e4dcdc;
     height: 100vh;
     overflow: hidden;
@@ -289,4 +289,11 @@ input[type="radio"]:checked+label{
 
 input:focus, select:focus{
     outline: none;
+}
+a,a:hover{
+    text-decoration: none;
+    color: inherit;
+    text-shadow: inherit;
+    -webkit-text-stroke: inherit;
+
 }

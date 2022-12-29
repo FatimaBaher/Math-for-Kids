@@ -7,6 +7,7 @@ let loseAudio = new Audio('assets/mixkit-retro-arcade-lose-2027.wav');
 let winAudio = new Audio('assets/claps.mp3');
 let CountDownTime;
 let random = false;
+const MIN_INT = -9007199254740991;
 
 
 //Grabbing Elements
@@ -28,9 +29,11 @@ const nameInput = document.querySelector('.input>input');
 startGameBtn.addEventListener("click",()=>{
     level = document.querySelector("input[name='level']:checked").value;
     operation = document.querySelector(".operatorsList").value;
-    username = nameInput.value;
+    username = nameInput.value.toUpperCase();
     if(operation=="RANDOM"){
         random=true;
+    }else{
+        random=false;
     }
     switch(level){
         case "EASY":
@@ -57,7 +60,6 @@ startGameBtn.addEventListener("click",()=>{
             break; 
     }
     
-    console.log(level,username,operation,random,secRemoved,xp,min,sec);
     popup.style.opacity = 0;
     popup.style.pointerEvents = "none";
     hintBtn.textContent = "HINT FOR " + xp + " XP"; 
@@ -65,6 +67,7 @@ startGameBtn.addEventListener("click",()=>{
     startTimer();  
     setScore(0);
     generateEquation();
+    getUsersInfo();
 })
 
 generateBtn.addEventListener("click",()=>{
@@ -91,9 +94,9 @@ startTimerBtn.addEventListener("click",()=>{
 })
 
 //Defining Functions
+
 function useHint(hintNumber){  
     if(score<xp || hintNumber>1){
-        alert("Sorry cant");
         return;
     }
     let val = hintNumber==1? ans1 : ans2;
@@ -229,7 +232,6 @@ function startTimer(){
         if((minutesPos.textContent==0 && secondsPos.textContent==0) || minutesPos.textContent < 0){
             clearInterval(x);
             setTimer('00','00')
-            alert(username+" your score is "+score);
             title.style.textShadow = '0 0 10px black';
             title.textContent = "YOUR SCORE: " + score;
             popup.style.opacity = 1;
@@ -249,11 +251,34 @@ function removeSeconds(s){
 
 
 function checkHighScore(){
-    let highscore = localStorage.getItem("highscore");
-    if(!highscore || score>JSON.parse(highscore).score || JSON.parse(highscore).name!=username){
-        highscore = {name: username, score: score};
-        localStorage.setItem("highscore",JSON.stringify(highscore));
-        alert("new high score!!!!!!");
+    let highscoreObj = localStorage.getItem("highscore");
+
+    if(!highscoreObj || JSON.parse(highscoreObj).score == MIN_INT){
+        highscoreObj = {name: username, score: score};
+        localStorage.setItem("highscore",JSON.stringify(highscoreObj));
+        fetch('https://sheetdb.io/api/v1/1s6kwc2vjrjbx',{
+            method: 'POST',
+            headers:{
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                username: username,
+                highscore: score
+            })
+        })
+    }
+    else if(score>JSON.parse(highscoreObj).score) { 
+        highscoreObj = {name: username, score: score};
+        localStorage.setItem("highscore",JSON.stringify(highscoreObj));
+        fetch('https://sheetdb.io/api/v1/1s6kwc2vjrjbx/username/'+username,{  
+            method: 'PATCH',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                highscore: score
+            })
+        })
     }
 
 }
@@ -262,50 +287,31 @@ function fillNameInput(){
     let savedInfo = localStorage.getItem("highscore");
     if(savedInfo){
         savedInfo =  JSON.parse(savedInfo);
-        nameInput.value = savedInfo.name;
+        nameInput.value = savedInfo.username;
     } 
+}
+
+function getUsersInfo(){
+    function isFound(data){
+        let found = data.length>0;
+        if(found){
+            localStorage.setItem("highscore",JSON.stringify({username: data[0].username, score: parseInt(data[0].highscore)}));
+        }else{
+            localStorage.setItem("highscore",JSON.stringify({username: username, score: MIN_INT}));
+
+        }
+    }
+    fetch('https://sheetdb.io/api/v1/1s6kwc2vjrjbx/search?username='+username,)
+    .then(res=>res.json())
+    .then(data=>isFound(data));
+   
+
 }
 
 
 fillNameInput();
 
-/*fetch('https://sheetdb.io/api/v1/1s6kwc2vjrjbx',{
-    method:"POST",
-    headers: {
-        'Content-Type':'application/json'
-    },
-    body: JSON.stringify({
-        username: 'test2',
-        highscore: 30,
-    })
 
-})
-.then(res=>res.json())
-.then(data=>console.log(data));
-let highscores;
-fetch('https://sheetdb.io/api/v1/1s6kwc2vjrjbx')
-.then(res=>res.json())
-.then(data=>{
-    highscores=data;
-    test();
-}
-)
-
-function test(){
-    console.log(highscores);
-    for(let c of highscores){
-        console.log(c.username,c.highscore);
-    }
-}*/
-fetch('https://sheetdb.io/api/v1/1s6kwc2vjrjbx/username/test',{  
-    method: 'PATCH',
-    headers: {
-        'Content-Type': 'application/json'
-    },
-    body: JSON.stringify({
-        highscore: 5
-    })
-})
 
 
 
